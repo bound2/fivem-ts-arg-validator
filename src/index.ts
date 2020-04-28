@@ -23,8 +23,7 @@ const requiredMetadataKey = Symbol('required');
 const sizeMetadataKey = Symbol('size');
 
 export function required(target: any, propertyKey: string | symbol, parameterIndex: number): void {
-    const existingRequiredParameters: Array<number> =
-        Reflect.getOwnMetadata(requiredMetadataKey, target, propertyKey) || [];
+    const existingRequiredParameters: Array<number> = Reflect.getOwnMetadata(requiredMetadataKey, target, propertyKey) || [];
     existingRequiredParameters.push(parameterIndex);
 
     Reflect.defineMetadata(requiredMetadataKey, existingRequiredParameters, target, propertyKey);
@@ -38,8 +37,7 @@ interface Size {
 
 export function size(min: number, max: number) {
     return (target: any, propertyKey: string | symbol, parameterIndex: number): void => {
-        const existingSizeParameters: Array<Size> =
-            Reflect.getOwnMetadata(sizeMetadataKey, target, propertyKey) || [];
+        const existingSizeParameters: Array<Size> = Reflect.getOwnMetadata(sizeMetadataKey, target, propertyKey) || [];
         const size: Size = {
             min: min,
             max: max,
@@ -51,19 +49,11 @@ export function size(min: number, max: number) {
     };
 }
 
-export function validate(
-    target: any,
-    propertyName: string,
-    descriptor: TypedPropertyDescriptor<(...params: Array<any>) => Promise<any>>,
-): TypedPropertyDescriptor<any> {
+export function validate(target: any, propertyName: string, descriptor: TypedPropertyDescriptor<(...params: Array<any>) => Promise<any>>): TypedPropertyDescriptor<any> {
     const method = descriptor.value;
 
     descriptor.value = async function (...args: Array<any>): Promise<any> {
-        const requiredParameters: Array<number> = Reflect.getOwnMetadata(
-            requiredMetadataKey,
-            target,
-            propertyName,
-        );
+        const requiredParameters: Array<number> = Reflect.getOwnMetadata(requiredMetadataKey, target, propertyName);
         if (requiredParameters) {
             for (const parameterIndex of requiredParameters) {
                 if (parameterIndex >= args.length || !args[parameterIndex]) {
@@ -72,21 +62,14 @@ export function validate(
                 }
             }
         }
-        const sizedParameters: Array<Size> = Reflect.getOwnMetadata(
-            sizeMetadataKey,
-            target,
-            propertyName,
-        );
+        const sizedParameters: Array<Size> = Reflect.getOwnMetadata(sizeMetadataKey, target, propertyName);
         if (sizedParameters) {
             for (const s of sizedParameters) {
                 const value = args[s.index];
                 if (typeof value === 'number' && (s.min > value || s.max < value)) {
                     // TODO add custom errors which provide detailed error msg e.g. function name, arg idx, min size, max size, actual size
                     return Promise.reject(new SizeConstraintError());
-                } else if (
-                    typeof value === 'string' &&
-                    (s.min > value.length || s.max < value.length)
-                ) {
+                } else if (typeof value === 'string' && (s.min > value.length || s.max < value.length)) {
                     return Promise.reject(new SizeConstraintError());
                 } else if (Array.isArray(value) && (s.min > value.length || s.max < value.length)) {
                     return Promise.reject(new SizeConstraintError());
