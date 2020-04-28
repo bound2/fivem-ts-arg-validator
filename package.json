@@ -5,6 +5,10 @@
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "author": "bound2 <bound2@noreply.users.github.com>",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/bound2/fivem-ts-arg-validator"
+    },
     "license": "MIT",
     "private": false,
     "scripts": {
