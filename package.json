@@ -2,7 +2,8 @@
     "name": "fivem-ts-arg-validator",
     "version": "1.0.0",
     "description": "TypeScript function argument validator by decorators",
-    "main": "src/index.ts",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
     "author": "bound2 <bound2@noreply.users.github.com>",
     "license": "MIT",
     "private": false,
@@ -11,6 +12,7 @@
         "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
         "test": "mocha -r ts-node/register/transpile-only test/*.test.ts"
     },
+    "prepublish": "tsc -b src",
     "dependencies": {
         "reflect-metadata": "^0.1.13"
     },
