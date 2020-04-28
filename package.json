@@ -1,6 +1,6 @@
 {
     "name": "fivem-ts-arg-validator",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "TypeScript function argument validator by decorators",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -14,9 +14,9 @@
     "scripts": {
         "format": "prettier --write \"src/**/*.ts\"",
         "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-        "test": "mocha -r ts-node/register/transpile-only test/*.test.ts"
+        "test": "mocha -r ts-node/register/transpile-only test/*.test.ts",
+        "prepublish": "tsc -b src"
     },
-    "prepublish": "tsc -b src",
     "dependencies": {
         "reflect-metadata": "^0.1.13"
     },
