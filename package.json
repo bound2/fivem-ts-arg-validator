@@ -1,0 +1,9 @@
+{
+    "name": "fivem-ts-arg-validator",
+    "version": "1.0.0",
+    "description": "TypeScript function argument validator by decorators",
+    "main": "src/index.ts",
+    "author": "bound2 <bound2@noreply.users.github.com>",
+    "license": "MIT",
+    "private": false
+}
